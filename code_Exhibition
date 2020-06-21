@@ -1,0 +1,25 @@
+import sys, requests
+from PyQt5 import QtGui, uic, QtWidgets
+
+(form_class, qtbase_class) = uic.loadUiType('pitcqt.ui')
+
+
+class MainWindow(qtbase_class, form_class):
+    def __init__(self):
+        super(MainWindow, self).__init__()
+        self.setupUi(self)
+        self.pushButton.clicked.connect(self._showpic)
+
+    def _showpic(self):
+        url = 'http://tva3.sinaimg.cn/large/9dbef4cfgw1f3oz54uapsj20q90hi418'  ##图片链接
+        pic = requests.get(url).content  ##获取图片链接的数据
+        pixmap = QtGui.QPixmap()  ##新建一个QPixmap的类
+        pixmap.loadFromData(pic)  ##pixmap加载图片数据
+        self.label.setPixmap(pixmap)  ##最终在label上显示
+
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    ui = MainWindow()
+    ui.show()
+    sys.exit(app.exec_())
